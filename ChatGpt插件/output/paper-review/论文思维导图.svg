@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2200" height="1810" viewBox="0 0 2200 1810"><rect width="100%" height="100%" fill="#f5f7fb"/>
+<text x="60" y="87" font-family="Microsoft YaHei, sans-serif" font-size="52" fill="#203047">九篇基础论文 · 方法与验证进展</text>
+<text x="62" y="142" font-family="Microsoft YaHei, sans-serif" font-size="30" fill="#596c84">从“训练得动”到“算得省、选得准、关联得远”</text>
+<path d="M370,910 C430.0,910 430.0,220 490,220" fill="none" stroke="#4574b0" stroke-width="5"/>
+<path d="M820,220 C895.0,220 895.0,220 970,220" fill="none" stroke="#4574b0" stroke-width="5"/>
+<path d="M370,910 C430.0,910 430.0,570 490,570" fill="none" stroke="#348579" stroke-width="5"/>
+<path d="M820,570 C895.0,570 895.0,400 970,400" fill="none" stroke="#348579" stroke-width="5"/>
+<path d="M820,570 C895.0,570 895.0,570 970,570" fill="none" stroke="#348579" stroke-width="5"/>
+<path d="M820,570 C895.0,570 895.0,740 970,740" fill="none" stroke="#348579" stroke-width="5"/>
+<path d="M370,910 C430.0,910 430.0,1175 490,1175" fill="none" stroke="#8b63ad" stroke-width="5"/>
+<path d="M820,1175 C895.0,1175 895.0,920 970,920" fill="none" stroke="#8b63ad" stroke-width="5"/>
+<path d="M820,1175 C895.0,1175 895.0,1090 970,1090" fill="none" stroke="#8b63ad" stroke-width="5"/>
+<path d="M820,1175 C895.0,1175 895.0,1260 970,1260" fill="none" stroke="#8b63ad" stroke-width="5"/>
+<path d="M820,1175 C895.0,1175 895.0,1430 970,1430" fill="none" stroke="#8b63ad" stroke-width="5"/>
+<path d="M370,910 C430.0,910 430.0,1600 490,1600" fill="none" stroke="#aa7843" stroke-width="5"/>
+<path d="M820,1600 C895.0,1600 895.0,1600 970,1600" fill="none" stroke="#aa7843" stroke-width="5"/>
+<rect x="490" y="163" width="330" height="114" rx="18" fill="#e6eef9" stroke="#d6dfec" stroke-width="2"/>
+<text x="515" y="214" font-family="Microsoft YaHei, sans-serif" font-size="36" fill="#4574b0">深层网络训练</text>
+<text x="515" y="257" font-family="Microsoft YaHei, sans-serif" font-size="24" fill="#203047">怎样让加深有效？</text>
+<rect x="970" y="142" width="1170" height="156" rx="18" fill="#ffffff" stroke="#d6dfec" stroke-width="2"/>
+<text x="995" y="199" font-family="Microsoft YaHei, sans-serif" font-size="36" fill="#4574b0">ResNet</text>
+<text x="1330" y="197" font-family="Microsoft YaHei, sans-serif" font-size="30" fill="#203047">核心：残差学习与 shortcut</text>
+<text x="995" y="246" font-family="Microsoft YaHei, sans-serif" font-size="28" fill="#203047">实现：卷积分支 F(x) + x；尺寸不同时投影</text>
+<text x="995" y="280" font-family="Microsoft YaHei, sans-serif" font-size="28" fill="#596c84">已验证：ImageNet / CIFAR；检测与竞赛</text>
+<rect x="490" y="513" width="330" height="114" rx="18" fill="#e4f2ef" stroke="#d6dfec" stroke-width="2"/>
+<text x="515" y="564" font-family="Microsoft YaHei, sans-serif" font-size="36" fill="#348579">轻量化计算</text>
+<text x="515" y="607" font-family="Microsoft YaHei, sans-serif" font-size="24" fill="#203047">怎样在预算内表达？</text>
+<rect x="970" y="322" width="1170" height="156" rx="18" fill="#ffffff" stroke="#d6dfec" stroke-width="2"/>
+<text x="995" y="379" font-family="Microsoft YaHei, sans-serif" font-size="36" fill="#348579">MobileNet V1</text>
+<text x="1330" y="377" font-family="Microsoft YaHei, sans-serif" font-size="30" fill="#203047">核心：拆开空间提取与通道混合</text>
+<text x="995" y="426" font-family="Microsoft YaHei, sans-serif" font-size="28" fill="#203047">实现：DW 3×3 → PW 1×1；宽度 α / 分辨率 ρ</text>
+<text x="995" y="460" font-family="Microsoft YaHei, sans-serif" font-size="28" fill="#596c84">已验证：分类、检测、细粒度与人脸等应用</text>
+<rect x="970" y="492" width="1170" height="156" rx="18" fill="#ffffff" stroke="#d6dfec" stroke-width="2"/>
+<text x="995" y="549" font-family="Microsoft YaHei, sans-serif" font-size="36" fill="#348579">IGC 原版</text>
+<text x="1330" y="547" font-family="Microsoft YaHei, sans-serif" font-size="30" fill="#203047">核心：两级互补分组，保留跨组交流</text>
+<text x="995" y="596" font-family="Microsoft YaHei, sans-serif" font-size="28" fill="#203047">实现：空间分组 → 交错重排 → 逐点分组</text>
+<text x="995" y="630" font-family="Microsoft YaHei, sans-serif" font-size="28" fill="#596c84">已验证：CIFAR / SVHN / ImageNet；残差结合</text>
+<rect x="970" y="662" width="1170" height="156" rx="18" fill="#ffffff" stroke="#d6dfec" stroke-width="2"/>
+<text x="995" y="719" font-family="Microsoft YaHei, sans-serif" font-size="36" fill="#348579">ShuffleNet V1</text>
+<text x="1330" y="717" font-family="Microsoft YaHei, sans-serif" font-size="30" fill="#203047">核心：继续压低逐点卷积成本</text>
+<text x="995" y="766" font-family="Microsoft YaHei, sans-serif" font-size="28" fill="#203047">实现：1×1 分组 → shuffle → DW → 1×1 分组</text>
+<text x="995" y="800" font-family="Microsoft YaHei, sans-serif" font-size="28" fill="#596c84">已验证：分类 / COCO 检测；ARM 实际耗时</text>
+<rect x="490" y="1118" width="330" height="114" rx="18" fill="#f0eaf8" stroke="#d6dfec" stroke-width="2"/>
+<text x="515" y="1169" font-family="Microsoft YaHei, sans-serif" font-size="36" fill="#8b63ad">特征与尺度选择</text>
+<text x="515" y="1212" font-family="Microsoft YaHei, sans-serif" font-size="24" fill="#203047">怎样按输入分配权重？</text>
+<rect x="970" y="842" width="1170" height="156" rx="18" fill="#ffffff" stroke="#d6dfec" stroke-width="2"/>
+<text x="995" y="899" font-family="Microsoft YaHei, sans-serif" font-size="36" fill="#8b63ad">SE</text>
+<text x="1330" y="897" font-family="Microsoft YaHei, sans-serif" font-size="30" fill="#203047">核心：哪些通道更重要？</text>
+<text x="995" y="946" font-family="Microsoft YaHei, sans-serif" font-size="28" fill="#203047">实现：GAP → 两层 FC → sigmoid → 通道乘权</text>
+<text x="995" y="980" font-family="Microsoft YaHei, sans-serif" font-size="28" fill="#596c84">已验证：多骨干分类、场景分类与检测</text>
+<rect x="970" y="1012" width="1170" height="156" rx="18" fill="#ffffff" stroke="#d6dfec" stroke-width="2"/>
+<text x="995" y="1069" font-family="Microsoft YaHei, sans-serif" font-size="36" fill="#8b63ad">ECA</text>
+<text x="1330" y="1067" font-family="Microsoft YaHei, sans-serif" font-size="30" fill="#203047">核心：更少参数实现通道注意力</text>
+<text x="995" y="1116" font-family="Microsoft YaHei, sans-serif" font-size="28" fill="#203047">实现：GAP → 通道轴 Conv1D → sigmoid</text>
+<text x="995" y="1150" font-family="Microsoft YaHei, sans-serif" font-size="28" fill="#596c84">已验证：分类、检测与实例分割</text>
+<rect x="970" y="1182" width="1170" height="156" rx="18" fill="#ffffff" stroke="#d6dfec" stroke-width="2"/>
+<text x="995" y="1239" font-family="Microsoft YaHei, sans-serif" font-size="36" fill="#8b63ad">CBAM</text>
+<text x="1330" y="1237" font-family="Microsoft YaHei, sans-serif" font-size="30" fill="#203047">核心：哪些通道、哪些位置更重要？</text>
+<text x="995" y="1286" font-family="Microsoft YaHei, sans-serif" font-size="28" fill="#203047">实现：通道注意力 → 空间注意力；双池化</text>
+<text x="995" y="1320" font-family="Microsoft YaHei, sans-serif" font-size="28" fill="#596c84">已验证：分类、COCO / VOC 检测与可视化</text>
+<rect x="970" y="1352" width="1170" height="156" rx="18" fill="#ffffff" stroke="#d6dfec" stroke-width="2"/>
+<text x="995" y="1409" font-family="Microsoft YaHei, sans-serif" font-size="36" fill="#8b63ad">SK</text>
+<text x="1330" y="1407" font-family="Microsoft YaHei, sans-serif" font-size="30" fill="#203047">核心：按输入融合不同感受野</text>
+<text x="995" y="1456" font-family="Microsoft YaHei, sans-serif" font-size="28" fill="#203047">实现：多尺度分支 → 分支维 softmax → 加权和</text>
+<text x="995" y="1490" font-family="Microsoft YaHei, sans-serif" font-size="28" fill="#596c84">已验证：ImageNet / CIFAR；尺度响应分析</text>
+<rect x="490" y="1543" width="330" height="114" rx="18" fill="#f8eedf" stroke="#d6dfec" stroke-width="2"/>
+<text x="515" y="1594" font-family="Microsoft YaHei, sans-serif" font-size="36" fill="#aa7843">全局序列交互</text>
+<text x="515" y="1637" font-family="Microsoft YaHei, sans-serif" font-size="24" fill="#203047">怎样聚合远距离信息？</text>
+<rect x="970" y="1522" width="1170" height="156" rx="18" fill="#ffffff" stroke="#d6dfec" stroke-width="2"/>
+<text x="995" y="1579" font-family="Microsoft YaHei, sans-serif" font-size="36" fill="#aa7843">Transformer</text>
+<text x="1330" y="1577" font-family="Microsoft YaHei, sans-serif" font-size="30" fill="#203047">核心：按内容相关性直接聚合不同位置</text>
+<text x="995" y="1626" font-family="Microsoft YaHei, sans-serif" font-size="28" fill="#203047">实现：Q/K/V 多头注意力 + 位置编码 + FFN</text>
+<text x="995" y="1660" font-family="Microsoft YaHei, sans-serif" font-size="28" fill="#596c84">已验证：机器翻译、句法分析与消融</text>
+<rect x="60" y="831" width="310" height="158" rx="18" fill="#203047" stroke="#203047" stroke-width="2"/>
+<text x="94" y="894" font-family="Microsoft YaHei, sans-serif" font-size="36" fill="#ffffff">九篇基础论文</text>
+<text x="94" y="944" font-family="Microsoft YaHei, sans-serif" font-size="24" fill="#dce5f2">结构 · 方法 · 证据</text>
+<text x="62" y="1758" font-family="Microsoft YaHei, sans-serif" font-size="28" fill="#596c84">口径：进展来自所给论文；不表示当前社区进展或个人复现状态。</text>
+<text x="62" y="1794" font-family="Microsoft YaHei, sans-serif" font-size="24" fill="#596c84">主题归类不代表严格历史顺序；不同任务与实验设置不作统一排名。</text>
+</svg>

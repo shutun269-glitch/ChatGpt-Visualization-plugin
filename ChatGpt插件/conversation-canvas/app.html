@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>对话便笺画布</title>
+<style>
+:root{font-family:system-ui,'Microsoft YaHei',sans-serif;color-scheme:light dark;--bg:#f4f7fb;--paper:#fff;--ink:#24334a;--muted:#64748b;--line:#dfe6f0;--blue:#376cd6;--soft:#eef4ff;--green:#18865a;--purple:#8a64c2;--input:#fff}
+*{box-sizing:border-box}body{margin:0;color:var(--ink);background:var(--bg);overflow:hidden}button,input,textarea,select{font:inherit}button{cursor:pointer;border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--paper);color:var(--ink);font-size:12px}button:hover{border-color:var(--blue)}button:disabled{opacity:.5;cursor:default}button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--blue);outline-offset:2px}.primary{background:var(--blue);color:#fff;border-color:var(--blue)}[hidden]{display:none!important}
+.app{height:100dvh;display:flex;flex-direction:column;min-height:0}.toolbar{flex:none;background:var(--paper);padding:12px 16px 8px;border-bottom:1px solid var(--line)}.top,.tools,.searchbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.top{margin-bottom:9px}.brand{font-weight:750;font-size:15px;margin-right:auto}.brand small{font-size:10px;color:var(--muted);font-weight:500;margin-left:7px}.active{background:var(--soft);color:var(--blue);border-color:var(--blue)}.tools input{accent-color:var(--blue);width:90px}.tools output{width:38px;font-size:11px;color:var(--muted)}.searchbar{margin-top:8px}.searchbar input{flex:1;min-width:120px;border:1px solid var(--line);background:var(--input);color:var(--ink);border-radius:8px;padding:7px 10px;font-size:12px}.searchbar span{font-size:11px;color:var(--muted);min-width:38px}.meta{padding:7px 16px;display:flex;gap:10px;color:var(--muted);font-size:11px;flex:none;align-items:center}.meta #title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}.legend{white-space:nowrap}.legend b{color:var(--blue)}.legend i{color:var(--purple);font-style:normal}
+.workspace{position:relative;flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;background-image:radial-gradient(#cdd8e6 .7px,transparent .7px);background-size:20px 20px;touch-action:pan-x pan-y}.space{position:relative}.canvas{position:absolute;left:0;top:0;transform-origin:0 0}.edges{position:absolute;inset:0;overflow:visible;pointer-events:none}.edge{fill:none;stroke:#8298b8;stroke-width:2}.edge.branch{stroke:var(--purple);stroke-dasharray:6 5}.edge.focused{stroke:var(--blue);stroke-width:3}.note{position:absolute;width:360px;height:408px;display:flex;flex-direction:column;border:1px solid var(--line);border-top:3px solid var(--blue);border-radius:12px;background:var(--paper);box-shadow:0 4px 14px #1935540c;overflow:hidden}.note.branch{border-top-color:var(--purple)}.note.selected{outline:2px solid var(--blue);outline-offset:2px}.note.match{box-shadow:0 0 0 3px #e6ac3855}.note-top{display:flex;align-items:center;gap:8px;padding:10px 12px 5px;cursor:grab;touch-action:none;user-select:none;font-size:12px;font-weight:700}.node-label{color:var(--blue);white-space:nowrap}.kind{margin-left:auto;color:var(--muted);font-size:10px;font-weight:500}.note-tools{display:flex;gap:5px;padding:3px 10px 6px}.note-tools button{font-size:10px;padding:3px 6px}.node-text{font-size:12px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;overflow:auto;user-select:text;cursor:text;scrollbar-width:thin;overscroll-behavior:contain;padding:0 12px}.question-text{flex:none;height:67px;font-weight:600}.answer-label{font-size:10px;color:var(--green);margin:7px 12px 5px;padding-top:6px;border-top:1px solid var(--line);flex:none}.answer-text{flex:1;min-height:36px}.composer{padding:8px 10px 10px;flex:none}.composer textarea{width:100%;height:44px;resize:none;border:1px solid var(--line);background:var(--input);color:var(--ink);border-radius:8px;padding:6px 8px;font-size:12px;display:block}.composer .actions{display:flex;justify-content:flex-end;gap:6px;margin-top:6px}.composer button{font-size:11px;padding:4px 8px}.quote{display:flex;gap:5px;align-items:center;font-size:10px;color:var(--purple);height:24px}.quote span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}.quote button{padding:0 5px}.list-view{padding:14px;display:grid;gap:14px}.list-view .note{position:relative;width:100%;max-width:920px;height:auto;min-height:360px;margin:auto;left:auto!important;top:auto!important}.list-view .question-text{height:auto;max-height:130px}.list-view .answer-text{max-height:260px;min-height:80px}.empty{padding:70px 24px;text-align:center;color:var(--muted);font-size:14px}.status{padding:7px 16px;min-height:30px;flex:none;font-size:11px;color:var(--muted);background:var(--paper);border-top:1px solid var(--line)}.selection{position:fixed;z-index:10;box-shadow:0 4px 16px #23385c30;background:var(--blue);color:white;border-radius:8px;padding:7px 12px;font-size:12px;max-width:90vw}mark{background:#ffe5a0;color:#3a2e11;border-radius:2px}
+dialog{max-width:min(600px,94vw);width:540px;max-height:88vh;border:1px solid var(--line);border-radius:16px;background:var(--paper);color:var(--ink);padding:20px}dialog::backdrop{background:#10243b55}dialog h2{font-size:18px;margin:0 0 8px}dialog p{font-size:12px;line-height:1.6;color:var(--muted)}dialog label{display:block;font-size:12px;margin:12px 0 5px}dialog select,dialog textarea{width:100%;background:var(--input);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px}dialog textarea{height:250px;font:12px/1.5 ui-monospace,monospace;white-space:pre}dialog footer{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+@media(max-width:640px){.toolbar{padding:9px}.legend{display:none}.tools{gap:5px}.tools button{padding:5px 7px}.brand{font-size:13px}.meta{padding:6px 9px}}
+@media(prefers-color-scheme:dark){:root{--bg:#111a28;--paper:#1b283b;--ink:#e2eaf5;--muted:#9eafc7;--line:#34465e;--blue:#82aaff;--soft:#273e65;--green:#81d5ac;--purple:#c1a0ee;--input:#152033}.primary{background:#376cd6;color:white;border-color:#376cd6}.workspace{background-image:radial-gradient(#34465e .7px,transparent .7px)}}
+</style></head><body><main class="app">
+<header class="toolbar"><div class="top"><div class="brand">✣ 对话便笺画布 <small>0.5</small></div><button id="tree-view" class="active">树状图</button><button id="list-view">阅读列表</button><button id="export">导出</button></div>
+<div class="tools"><button id="fit">适应画布</button><button id="latest">定位最新</button><button id="expand">展开全部</button><button id="arrange">自动整理</button><button id="undo" disabled>撤销关系修改</button><input id="zoom" type="range" min="10" max="170" value="85" aria-label="画布缩放"><output id="zoom-value">85%</output></div>
+<div class="searchbar"><input id="search" type="search" placeholder="搜索问题和完整回答…" aria-label="搜索问答"><span id="search-count">0 项</span><button id="previous-match" aria-label="上一项搜索结果">↑</button><button id="next-match" aria-label="下一项搜索结果">↓</button></div></header>
+<div class="meta"><span id="count">0 个问题</span><span id="title">等待对话内容</span><span class="legend"><b>━ 主线</b>　<i>┄ 分支</i></span></div>
+<section class="workspace" aria-label="问答画布"><div class="space"><div class="canvas"></div></div></section>
+<div id="status" class="status" role="status" aria-live="polite">拖动空白区域平移；拖动卡片标题调整位置。</div>
+</main><button id="quote-action" class="selection" hidden>引用选中文字追问</button>
+<dialog id="relation-dialog"><h2>调整问题关系</h2><p id="relation-description"></p><label for="relation-kind">问题类型</label><select id="relation-kind"><option value="main">主线延续</option><option value="branch">从某个问题分支</option></select><label for="relation-parent">来源问题</label><select id="relation-parent"></select><p>只改变画布关系。原始对话和 ChatGPT 原生分支不会改变。</p><footer><button id="relation-reset">恢复自动判断</button><button id="relation-cancel">取消</button><button id="relation-save" class="primary">保存关系</button></footer></dialog>
+<dialog id="export-dialog"><h2 id="export-title">导出对话</h2><p id="export-description">仅导出本次传入的对话内容，不包含未发送的追问。</p><select id="export-format" aria-label="导出格式"><option value="md">Markdown 文档</option><option value="json">JSON 内容和关系</option></select><textarea id="export-content" aria-label="导出内容" readonly></textarea><footer><button id="export-close">关闭</button><button id="export-copy">复制内容</button><button id="export-download" class="primary">下载文件</button></footer></dialog>
+<script type="module">// Pure data and layout functions; also bundled into app.html for the isolated host iframe.
+const VERSION = '0.5.0';
+const CARD_WIDTH = 360;
+const CARD_HEIGHT = 408;
+
+function fingerprint(value) {
+  let a = 2166136261, b = 5381;
+  for (const ch of String(value)) { const c = ch.codePointAt(0); a = Math.imul(a ^ c, 16777619); b = Math.imul(b, 33) ^ c; }
+  return (a >>> 0).toString(36) + '-' + (b >>> 0).toString(36);
+}
+function normalizeConversation(args = {}) {
+  if (!Array.isArray(args.messages)) throw new Error('messages 必须是消息数组');
+  const messages = args.messages.map((m, index) => {
+    if (!m || !['user', 'assistant'].includes(m.role) || typeof m.text !== 'string') throw new Error(`第 ${index + 1} 条消息格式无效`);
+    return { role: m.role, text: m.text,
+      ...(typeof m.id === 'string' && m.id ? { id: m.id } : {}),
+      ...(Number.isInteger(m.parentQuestion) && m.parentQuestion > 0 ? { parentQuestion: m.parentQuestion } : {}),
+      ...(['main', 'branch'].includes(m.relationship) ? { relationship: m.relationship } : {}) };
+  });
+  return { title: typeof args.title === 'string' ? args.title : '当前对话',
+    ...(typeof args.conversationId === 'string' && args.conversationId ? { conversationId: args.conversationId } : {}), messages };
+}
+function conversationKey(data) {
+  return 'conversation-canvas:v5:' + fingerprint(data.conversationId || `${data.title}\n${data.messages.find(m => m.role === 'user')?.text || data.messages[0]?.text || ''}`);
+}
+function buildNodes(messages) {
+  const nodes = [], occurrences = new Map(); let active = null, q = 0;
+  const key = m => {
+    const base = m.id ? 'id:' + m.id : `${m.role}:${fingerprint(m.text)}`;
+    const count = (occurrences.get(base) || 0) + 1; occurrences.set(base, count);
+    return base + ':' + count;
+  };
+  for (const [index, m] of messages.entries()) {
+    if (m.role === 'user') {
+      active = { id: key(m), q: ++q, text: m.text, answers: [], sourceIndex: index, parentQuestion: m.parentQuestion, relationship: m.relationship };
+      nodes.push(active);
+    } else if (active) active.answers.push({ text: m.text, sourceIndex: index });
+    else nodes.push({ id: key(m), q: null, text: '', answers: [{ text: m.text, sourceIndex: index }], sourceIndex: index });
+  }
+  return nodes;
+}
+function tokens(text) {
+  const stop = new Set(['这个','什么','如何','可以','问题','请问','一下','我们','需要','然后','what','this','that','please','with']);
+  try { return new Set([...new Intl.Segmenter('zh', { granularity: 'word' }).segment(text.toLowerCase())].filter(x => x.isWordLike && x.segment.length > 1 && !stop.has(x.segment)).map(x => x.segment)); }
+  catch { return new Set(text.toLowerCase().match(/[\p{L}\p{N}]{2,}/gu) || []); }
+}
+function similarity(a, b) {
+  const aa = tokens(a), bb = tokens(b); let matches = 0;
+  for (const token of aa) if (bb.has(token)) matches++;
+  return matches / Math.max(1, new Set([...aa, ...bb]).size);
+}
+function resolveLinks(input, overrides = {}) {
+  const nodes = input.map(n => ({ ...n, children: [], parentId: null, kind: n.q ? 'main' : 'note', source: 'sequence', reason: '按对话顺序连接' }));
+  const byId = new Map(nodes.map(n => [n.id, n])), byQ = new Map(nodes.filter(n => n.q).map(n => [n.q, n]));
+  let lastMain = null;
+  for (const n of nodes) {
+    if (!n.q) continue;
+    const valid = p => p && p.q && p.q < n.q;
+    const correction = Object.hasOwn(overrides, n.id) ? overrides[n.id] : null;
+    const explicit = byQ.get(n.parentQuestion);
+    const reference = n.text.match(/(?:基于当前对话中的|继续讨论|追问|针对)\s*Q\s*(\d+)/i);
+    const referenced = reference && byQ.get(Number(reference[1]));
+    let parent = null;
+    if (correction?.kind === 'main') { n.source = 'manual'; n.reason = '已手动设为主线'; }
+    else if (correction?.kind === 'branch' && valid(byId.get(correction.parentId))) { parent = byId.get(correction.parentId); n.source = 'manual'; n.reason = '已手动指定来源'; }
+    else if (n.relationship === 'main') { n.source = 'provided'; n.reason = '传入的主线标记'; }
+    else if (valid(explicit)) { parent = explicit; n.source = 'provided'; n.reason = '传入的分支标记'; }
+    else if (valid(referenced)) { parent = referenced; n.source = 'reference'; n.reason = '追问中明确引用了问题编号'; }
+    else if (/^(关于刚才|针对刚才|上述|前面提到|这段|其中|展开说|细说|再解释|继续解释)/.test(n.text.trim())) {
+      let best = null, score = 0;
+      for (const earlier of nodes) { if (!valid(earlier)) continue; const s = similarity(n.text, earlier.text); if (s >= score && s > 0) { best = earlier; score = s; } }
+      // Similar words alone are insufficient evidence of a real branch.
+      if (best && score >= 0.22) { parent = best; n.source = 'inferred'; n.reason = '根据追问措辞与内容关联推断，可修改'; }
+    }
+    if (parent) { n.kind = 'branch'; n.parentId = parent.id; }
+    else { n.parentId = lastMain?.id || null; lastMain = n; }
+  }
+  for (const n of nodes) if (n.parentId) byId.get(n.parentId).children.push(n.id);
+  for (const n of nodes) n.children.sort((a,b)=>(byId.get(a).kind==='main'?0:1)-(byId.get(b).kind==='main'?0:1));
+  return nodes;
+}
+function visibleTree(nodes, collapsed = {}) {
+  const hidden = new Set(), byId = new Map(nodes.map(n => [n.id, n]));
+  const hide = id => { if (hidden.has(id)) return; hidden.add(id); for (const child of byId.get(id)?.children || []) hide(child); };
+  for (const n of nodes) if (collapsed[n.id]) for (const child of n.children) hide(child);
+  return nodes.filter(n => !hidden.has(n.id));
+}
+function ancestors(nodes, id) {
+  const byId = new Map(nodes.map(n => [n.id, n])), result = []; let current = byId.get(id);
+  while (current?.parentId && result.length < nodes.length) { result.push(current.parentId); current = byId.get(current.parentId); }
+  return result;
+}
+function layoutTree(nodes, positions = {}) {
+  const visibleIds = new Set(nodes.map(n => n.id)); const byId = new Map(nodes.map(n => [n.id, n]));
+  const spanCache = new Map(), points = {};
+  const children = n => n.children.filter(id => visibleIds.has(id));
+  function span(n) { if (!spanCache.has(n.id)) spanCache.set(n.id, Math.max(1, children(n).reduce((sum,id) => sum + span(byId.get(id)), 0))); return spanCache.get(n.id); }
+  function place(n, depth, row) {
+    // Keep the main continuation on one horizontal row; branch lanes are placed below it.
+    points[n.id] = { x: 40 + depth * (CARD_WIDTH + 100), y: 32 + row * (CARD_HEIGHT + 44) };
+    let next = row;
+    for (const id of children(n)) { const child = byId.get(id); place(child, depth + 1, next); next += span(child); }
+  }
+  let row = 0;
+  for (const root of nodes.filter(n => !n.parentId || !visibleIds.has(n.parentId))) { place(root,0,row); row += span(root) + 0.4; }
+  for (const n of nodes) { const p = positions[n.id]; if (p && Number.isFinite(p.x) && Number.isFinite(p.y) && p.x >= 0 && p.y >= 0 && p.x < 1e7 && p.y < 1e7) points[n.id] = {x:p.x,y:p.y}; }
+  return { points, width: Math.max(500, ...Object.values(points).map(p => p.x + CARD_WIDTH + 40)), height: Math.max(450, ...Object.values(points).map(p => p.y + CARD_HEIGHT + 32)) };
+}
+function searchNodes(nodes, query) {
+  const needle = query.trim().toLocaleLowerCase(); if (!needle) return [];
+  return nodes.filter(n => `${n.q ? 'Q' + n.q : ''}\n${n.text}\n${n.answers.map(a=>a.text).join('\n')}`.toLocaleLowerCase().includes(needle)).map(n=>n.id);
+}
+function followupText(node, draft) {
+  return `请基于当前对话中的 Q${node.q} 继续回答。\n原问题：${node.text}${draft.quote ? '\n选中的原文：' + draft.quote : ''}\n我的追问：${draft.text}`;
+}
+function exportMarkdown(data, nodes) {
+  const byId = new Map(nodes.map(n => [n.id,n]));
+  const parts = [`# ${data.title}`, '', '> 本文件仅含本次传入画布的内容；主线/分支为画布展示关系，不代表新建原生会话。', ''];
+  for (const n of nodes) {
+    parts.push(`## ${n.q ? 'Q' + n.q : '开场回答'}${n.kind === 'branch' ? ' · 分支自 Q' + byId.get(n.parentId)?.q : ''}`, '', `关系来源：${n.reason}`, '');
+    if (n.q) parts.push(n.text, '');
+    for (const [i,a] of n.answers.entries()) parts.push(`### 回答 ${i+1}`, '', a.text, '');
+  }
+  return parts.join('\n');
+}
+
+const $ = s => document.querySelector(s);
+const workspace = $('.workspace'), space = $('.space'), canvas = $('.canvas');
+let data = { title:'当前对话', messages:[] }, key = '', nodes = [], visible = [], geometry = {points:{},width:500,height:450};
+let state = { positions:{}, overrides:{}, collapsed:{}, zoom:0.85, selected:null }, drafts = {}, view = 'tree';
+let matches = [], matchIndex = -1, history = [], cards = new Map(), dragging = null, busy = new Set(), bridgeReady = false, selectionCapture = null, signature = '', requestId = 0;
+let offsetX=0,offsetY=0;
+const pending = new Map();
+function status(text) { $('#status').textContent = text; }
+function object(value) { return value && typeof value === 'object' && !Array.isArray(value) ? value : {}; }
+function loadState() {
+  state = {positions:{},overrides:{},collapsed:{},zoom:0.85,selected:null}; drafts = {}; history=[];
+  try { const saved = JSON.parse(localStorage.getItem(key)||'{}'); for(const name of ['positions','overrides','collapsed']) state[name]=object(saved[name]); if(Number.isFinite(saved.zoom))state.zoom=Math.max(.1,Math.min(1.7,saved.zoom)); }
+  catch { /* Storage is optional in sandboxed hosts. */ }
+  try { drafts=object(JSON.parse(sessionStorage.getItem(key+':drafts')||'{}')); } catch {}
+  const widget=window.openai?.widgetState?.privateContent;
+  if(widget?.key===key) { drafts={...drafts,...object(widget.drafts)}; }
+}
+function save() {
+  if(!key)return;
+  try { localStorage.setItem(key,JSON.stringify(state)); sessionStorage.setItem(key+':drafts',JSON.stringify(drafts)); } catch {}
+  try { window.openai?.setWidgetState?.({privateContent:{key,drafts}}); } catch {}
+}
+function draftFor(id) {
+  if(!Object.hasOwn(drafts,id) || !drafts[id] || typeof drafts[id]!=='object') drafts[id]={text:'',quote:''};
+  return drafts[id];
+}
+function receive(value) {
+  const candidate=value?.structuredContent || value?.data || value;
+  if(!Array.isArray(candidate?.messages))return;
+  try {
+    const next=normalizeConversation(candidate), nextSignature=JSON.stringify(next);
+    if(nextSignature===signature)return;
+    const nextKey=conversationKey(next), first=key!==nextKey;
+    data=next;signature=nextSignature;
+    if(first){key=nextKey;loadState();$('#search').value='';matchIndex=-1;}
+    rebuild();
+    if(first)requestAnimationFrame(()=>nodes.length<=3?fit():focusNode(nodes.find(n=>n.q)?.id||nodes[0]?.id));
+    status(`${data.messages.length} 条消息已载入。画布只显示本次传入的内容。`);
+  } catch(error){status('无法读取对话：'+error.message);}
+}
+function rebuild() {
+  nodes=resolveLinks(buildNodes(data.messages),state.overrides);
+  visible=visibleTree(nodes,state.collapsed);
+  geometry=layoutTree(visible,state.positions);
+  matches=searchNodes(nodes,$('#search').value);
+  if(matchIndex>=matches.length)matchIndex=matches.length-1;
+  $('#count').textContent=`${nodes.filter(n=>n.q).length} 个问题 · ${visible.length}/${nodes.length} 张卡片`;
+  $('#title').textContent=data.title; $('#undo').disabled=!history.length;
+  $('#fit').disabled=view!=='tree';$('#zoom').disabled=view!=='tree';
+  $('#tree-view').classList.toggle('active',view==='tree');$('#list-view').classList.toggle('active',view==='list');
+  $('#search-count').textContent=matches.length?`${matchIndex>=0?matchIndex+1:0}/${matches.length}`:'0 项';
+  $('#previous-match').disabled=$('#next-match').disabled=!matches.length;
+  canvas.replaceChildren();cards.clear();canvas.classList.toggle('list-view',view==='list');
+  if(view==='tree') {
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.classList.add('edges');canvas.append(svg);resizeWorld();renderVisible();drawEdges();
+  } else {
+    canvas.style.cssText='position:relative;width:100%;height:auto;transform:none';space.style.cssText='width:100%;height:auto';
+    for(const n of visible){const card=createCard(n);canvas.append(card);cards.set(n.id,card);}
+  }
+  if(!nodes.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='调用“对话便笺画布”，即可把当前对话整理到这里。';canvas.append(empty);}
+}
+function resizeWorld() {
+  if(view!=='tree')return;
+  offsetX=Math.max(0,(workspace.clientWidth-geometry.width*state.zoom)/2);offsetY=Math.max(0,(workspace.clientHeight-geometry.height*state.zoom)/2);
+  canvas.style.position='absolute';canvas.style.left=offsetX+'px';canvas.style.top=offsetY+'px';canvas.style.width=geometry.width+'px';canvas.style.height=geometry.height+'px';canvas.style.transform=`scale(${state.zoom})`;
+  space.style.overflow='hidden';
+  space.style.width=Math.max(workspace.clientWidth,geometry.width*state.zoom)+'px';space.style.height=Math.max(workspace.clientHeight,geometry.height*state.zoom)+'px';
+  const svg=canvas.querySelector('svg');if(svg){svg.setAttribute('width',geometry.width);svg.setAttribute('height',geometry.height);}
+  $('#zoom').value=Math.round(state.zoom*100);$('#zoom-value').textContent=Math.round(state.zoom*100)+'%';
+}
+function renderVisible() {
+  if(view!=='tree')return;
+  const rect={x:(workspace.scrollLeft-offsetX)/state.zoom,y:(workspace.scrollTop-offsetY)/state.zoom,w:workspace.clientWidth/state.zoom,h:workspace.clientHeight/state.zoom};
+  const focused=document.activeElement?.closest('.note')?.dataset.id;const wanted=new Set();
+  for(const n of visible){const p=geometry.points[n.id];
+    if(n.id!==focused&&n.id!==dragging?.id&&(p.x+CARD_WIDTH<rect.x-450||p.x>rect.x+rect.w+450||p.y+CARD_HEIGHT<rect.y-450||p.y>rect.y+rect.h+450))continue;
+    wanted.add(n.id);
+    if(!cards.has(n.id)){const card=createCard(n);canvas.append(card);cards.set(n.id,card);}
+    const card=cards.get(n.id);card.style.left=p.x+'px';card.style.top=p.y+'px';
+  }
+  for(const [id,card] of cards)if(!wanted.has(id)){card.remove();cards.delete(id);}
+}
+function drawEdges() {
+  if(view!=='tree')return;
+  const svg=canvas.querySelector('svg');if(!svg)return;svg.replaceChildren();
+  const pathIds=new Set([state.selected,...ancestors(nodes,state.selected)]);
+  for(const n of visible){const a=geometry.points[n.parentId],b=geometry.points[n.id];if(!a||!b)continue;
+    const x1=a.x+CARD_WIDTH,y1=a.y+CARD_HEIGHT/2,x2=b.x,y2=b.y+CARD_HEIGHT/2,mid=(x1+x2)/2;
+    const path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('d',`M${x1} ${y1} C${mid} ${y1},${mid} ${y2},${x2} ${y2}`);
+    path.setAttribute('class',`edge ${n.kind==='branch'?'branch':''} ${pathIds.has(n.id)&&pathIds.has(n.parentId)?'focused':''}`);svg.append(path);
+  }
+}
+function highlight(el,text) {
+  const query=$('#search').value.trim();el.replaceChildren();
+  if(!query){el.textContent=text;return;}
+  const lower=text.toLocaleLowerCase(),needle=query.toLocaleLowerCase();let cursor=0,index;
+  while((index=lower.indexOf(needle,cursor))!==-1){el.append(document.createTextNode(text.slice(cursor,index)));const mark=document.createElement('mark');mark.textContent=text.slice(index,index+query.length);el.append(mark);cursor=index+query.length;}
+  el.append(document.createTextNode(text.slice(cursor)));
+}
+function button(label,action,title) {const el=document.createElement('button');el.type='button';el.textContent=label;if(title)el.title=title;el.addEventListener('click',e=>{e.stopPropagation();action(e);});return el;}
+function createCard(n) {
+  const card=document.createElement('article');card.className=`note ${n.kind==='branch'?'branch':''}`;card.dataset.id=n.id;card.dataset.q=n.q||'';
+  card.classList.toggle('selected',state.selected===n.id);card.classList.toggle('match',matches.includes(n.id));
+  const head=document.createElement('header');head.className='note-top';
+  const label=document.createElement('span');label.className='node-label';label.textContent=n.q?'Q'+n.q:'开场回答';
+  const kind=document.createElement('span');kind.className='kind';const parent=nodes.find(p=>p.id===n.parentId);
+  kind.textContent=n.kind==='branch'?`${n.source==='inferred'?'推断分支':'分支'} ← Q${parent?.q}`:n.kind==='note'?'补充内容':'主线';kind.title=n.reason;
+  head.append(label,kind);card.append(head);
+  const controls=document.createElement('div');controls.className='note-tools';
+  if(n.q){const rel=button('调整关系',()=>editRelation(n));rel.setAttribute('aria-label',`调整 Q${n.q} 的关系`);controls.append(rel);}
+  if(n.children.length)controls.append(button(state.collapsed[n.id]?'展开后续':'收起后续',()=>{state.collapsed[n.id]=!state.collapsed[n.id];save();rebuild();}));
+  card.append(controls);
+  if(n.q){const q=document.createElement('div');q.className='node-text question-text';q.dataset.section='question';highlight(q,n.text);card.append(q);}
+  const al=document.createElement('div');al.className='answer-label';al.textContent=n.answers.length?`回答${n.answers.length>1?' · '+n.answers.length+' 段':''}`:'尚无回答';card.append(al);
+  const answer=document.createElement('div');answer.className='node-text answer-text';answer.dataset.section='answer';highlight(answer,n.answers.map(a=>a.text).join('\n\n'));card.append(answer);
+  if(n.q) {
+    const draft=draftFor(n.id),form=document.createElement('form');form.className='composer';
+    const quote=document.createElement('div');quote.className='quote';quote.hidden=!draft.quote;
+    const quoteText=document.createElement('span');quoteText.textContent='引用：'+(draft.quote||'');quoteText.title=draft.quote||'';
+    quote.append(quoteText,button('×',()=>{draft.quote='';save();quote.hidden=true;},'移除引用'));
+    const input=document.createElement('textarea');input.placeholder='围绕这个问题继续追问…';input.setAttribute('aria-label',`Q${n.q} 的追问`);input.value=typeof draft.text==='string'?draft.text:'';
+    input.addEventListener('input',()=>{draft.text=input.value;save();send.disabled=!bridgeReady||busy.has(n.id)||!input.value.trim();});
+    const actions=document.createElement('div');actions.className='actions';
+    const copy=button('复制追问',()=>{if(!input.value.trim()){input.focus();return;}copyText(followupText(n,draft));});
+    const send=document.createElement('button');send.type='submit';send.className='primary';send.textContent=busy.has(n.id)?'发送中…':'发送追问';send.disabled=!bridgeReady||busy.has(n.id)||!input.value.trim();send.title=bridgeReady?'提交到当前 ChatGPT 对话':'等待连接；也可以复制追问';
+    actions.append(copy,send);form.append(quote,input,actions);
+    form.addEventListener('submit',e=>{e.preventDefault();sendFollowup(n,input,send);});form.addEventListener('click',e=>e.stopPropagation());card.append(form);
+  }
+  card.addEventListener('click',()=>selectNode(n.id));
+  head.addEventListener('pointerdown',e=>{
+    if(e.button!==0||view!=='tree')return;e.preventDefault();selectNode(n.id);
+    dragging={id:n.id,x:e.clientX,y:e.clientY,left:geometry.points[n.id].x,top:geometry.points[n.id].y,scrollX:workspace.scrollLeft,scrollY:workspace.scrollTop};head.setPointerCapture(e.pointerId);
+  });
+  head.addEventListener('pointermove',e=>{
+    if(dragging?.id!==n.id)return;
+    const p={x:Math.max(8,dragging.left+(e.clientX-dragging.x+workspace.scrollLeft-dragging.scrollX)/state.zoom),y:Math.max(8,dragging.top+(e.clientY-dragging.y+workspace.scrollTop-dragging.scrollY)/state.zoom)};
+    geometry.points[n.id]=p;state.positions[n.id]=p;card.style.left=p.x+'px';card.style.top=p.y+'px';
+    geometry.width=Math.max(geometry.width,p.x+CARD_WIDTH+40);geometry.height=Math.max(geometry.height,p.y+CARD_HEIGHT+32);resizeWorld();drawEdges();
+  });
+  const finish=()=>{if(dragging?.id===n.id){dragging=null;save();renderVisible();}};
+  head.addEventListener('pointerup',finish);head.addEventListener('pointercancel',finish);head.addEventListener('lostpointercapture',finish);
+  return card;
+}
+function selectNode(id){state.selected=id;for(const [key,card] of cards)card.classList.toggle('selected',key===id);drawEdges();}
+function focusNode(id) {
+  if(!id)return;
+  for(const a of ancestors(nodes,id))delete state.collapsed[a];selectNode(id);rebuild();
+  if(view==='list'){cards.get(id)?.scrollIntoView({block:'center'});return;}
+  const p=geometry.points[id];if(!p)return;
+  workspace.scrollLeft=Math.max(0,offsetX+(p.x+CARD_WIDTH/2)*state.zoom-workspace.clientWidth/2);workspace.scrollTop=Math.max(0,offsetY+(p.y+CARD_HEIGHT/2)*state.zoom-workspace.clientHeight/2);renderVisible();save();
+}
+function zoomTo(value) {
+  const cx=(workspace.scrollLeft+workspace.clientWidth/2-offsetX)/state.zoom,cy=(workspace.scrollTop+workspace.clientHeight/2-offsetY)/state.zoom;
+  state.zoom=Math.max(.1,Math.min(1.7,value));resizeWorld();workspace.scrollLeft=offsetX+cx*state.zoom-workspace.clientWidth/2;workspace.scrollTop=offsetY+cy*state.zoom-workspace.clientHeight/2;renderVisible();save();
+}
+function fit() {
+  if(view!=='tree'||!visible.length)return;
+  const points=Object.values(geometry.points),minX=Math.min(...points.map(p=>p.x)),minY=Math.min(...points.map(p=>p.y));
+  const maxX=Math.max(...points.map(p=>p.x+CARD_WIDTH)),maxY=Math.max(...points.map(p=>p.y+CARD_HEIGHT));
+  state.zoom=Math.max(.1,Math.min(1,(workspace.clientWidth-40)/(maxX-minX),(workspace.clientHeight-40)/(maxY-minY)));resizeWorld();
+  workspace.scrollLeft=Math.max(0,offsetX+(minX+maxX)/2*state.zoom-workspace.clientWidth/2);workspace.scrollTop=Math.max(0,offsetY+(minY+maxY)/2*state.zoom-workspace.clientHeight/2);renderVisible();save();
+}
+let pan=null;
+workspace.addEventListener('pointerdown',e=>{if(e.button!==0||e.target.closest('.note')||view!=='tree')return;pan={x:e.clientX,y:e.clientY,left:workspace.scrollLeft,top:workspace.scrollTop};workspace.setPointerCapture(e.pointerId);e.preventDefault();});
+workspace.addEventListener('pointermove',e=>{if(pan){workspace.scrollLeft=pan.left+pan.x-e.clientX;workspace.scrollTop=pan.top+pan.y-e.clientY;}});
+for(const event of ['pointerup','pointercancel','lostpointercapture'])workspace.addEventListener(event,()=>pan=null);
+workspace.addEventListener('scroll',()=>{renderVisible();$('#quote-action').hidden=true;},{passive:true});
+workspace.addEventListener('wheel',e=>{if((e.ctrlKey||e.metaKey)&&view==='tree'){e.preventDefault();zoomTo(state.zoom*Math.exp(-e.deltaY*.003));}},{passive:false});
+new ResizeObserver(()=>{resizeWorld();renderVisible();}).observe(workspace);
+$('#zoom').addEventListener('input',e=>zoomTo(Number(e.target.value)/100));$('#fit').onclick=fit;
+$('#latest').onclick=()=>focusNode(nodes.at(-1)?.id);
+$('#expand').onclick=()=>{state.collapsed={};save();rebuild();};
+$('#arrange').onclick=()=>{state.positions={};save();rebuild();fit();};
+$('#tree-view').onclick=()=>{view='tree';rebuild();focusNode(state.selected||visible[0]?.id);};
+$('#list-view').onclick=()=>{view='list';rebuild();};
+function nextMatch(delta){if(!matches.length)return;matchIndex=(matchIndex+delta+matches.length)%matches.length;const id=matches[matchIndex];focusNode(id);cards.get(id)?.querySelector('mark')?.scrollIntoView({block:'center',inline:'nearest'});}
+$('#search').addEventListener('input',()=>{matchIndex=-1;rebuild();});
+$('#search').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();nextMatch(e.shiftKey?-1:1);}});
+$('#previous-match').onclick=()=>nextMatch(-1);$('#next-match').onclick=()=>nextMatch(1);
+let relationNode=null;
+function editRelation(n) {
+  relationNode=n;$('#relation-description').textContent=`Q${n.q}：${n.reason}。`;
+  $('#relation-kind').value=n.kind==='branch'?'branch':'main';const select=$('#relation-parent');select.replaceChildren();
+  for(const prior of nodes.filter(p=>p.q&&p.q<n.q)){const option=document.createElement('option');option.value=prior.id;option.textContent=`Q${prior.q} · ${prior.text.slice(0,44)}`;select.append(option);}
+  if(n.parentId)select.value=n.parentId;
+  $('#relation-kind').querySelector('[value="branch"]').disabled=n.q===1;
+  select.disabled=$('#relation-kind').value!=='branch';$('#relation-dialog').showModal();
+}
+$('#relation-kind').onchange=()=>$('#relation-parent').disabled=$('#relation-kind').value!=='branch';
+$('#relation-cancel').onclick=()=>$('#relation-dialog').close();
+function changeRelation(reset=false) {
+  if(!relationNode)return;
+  history.push(JSON.parse(JSON.stringify(state.overrides)));if(history.length>20)history.shift();
+  if(reset)delete state.overrides[relationNode.id];
+  else state.overrides[relationNode.id]={kind:$('#relation-kind').value,parentId:$('#relation-parent').value};
+  state.positions={};save();$('#relation-dialog').close();rebuild();focusNode(relationNode.id);status('画布关系已更新，可撤销；原对话不受影响。');
+}
+$('#relation-save').onclick=()=>changeRelation();$('#relation-reset').onclick=()=>changeRelation(true);
+$('#undo').onclick=()=>{if(history.length){state.overrides=history.pop();state.positions={};save();rebuild();status('已撤销上一次关系修改。');}};
+function selectionAction() {
+  const selection=window.getSelection();if(!selection?.rangeCount||!selection.toString().trim()){$('#quote-action').hidden=true;return;}
+  const range=selection.getRangeAt(0),element=node=>node.nodeType===1?node:node.parentElement;
+  const start=element(range.startContainer)?.closest('.node-text'),end=element(range.endContainer)?.closest('.node-text');
+  if(!start||start!==end){$('#quote-action').hidden=true;return;}
+  const card=start.closest('.note'),n=nodes.find(n=>n.id===card?.dataset.id);if(!n?.q)return;
+  selectionCapture={id:n.id,text:selection.toString().trim()};const rect=range.getBoundingClientRect(),action=$('#quote-action');action.hidden=false;
+  action.style.left=Math.max(6,Math.min(rect.left,window.innerWidth-action.offsetWidth-6))+'px';action.style.top=Math.max(6,Math.min(rect.top-action.offsetHeight-6,window.innerHeight-action.offsetHeight-6))+'px';
+}
+document.addEventListener('pointerup',()=>setTimeout(selectionAction,0));document.addEventListener('keyup',e=>{if(e.key==='Shift'||e.key.startsWith('Arrow'))selectionAction();});
+$('#quote-action').addEventListener('pointerdown',e=>e.preventDefault());
+$('#quote-action').onclick=()=>{if(!selectionCapture)return;const {id,text}=selectionCapture;draftFor(id).quote=text;save();$('#quote-action').hidden=true;window.getSelection()?.removeAllRanges();focusNode(id);cards.get(id)?.querySelector('textarea')?.focus();};
+let exportValue='',exportName='',copyMode=false;
+function setExport() {
+  const format=$('#export-format').value;
+  exportValue=format==='md'?exportMarkdown(data,nodes):JSON.stringify({schemaVersion:1,pluginVersion:VERSION,...data,relationships:nodes.filter(n=>n.q).map(n=>({id:n.id,q:n.q,parentId:n.parentId,kind:n.kind,source:n.source,reason:n.reason})),layout:state.positions},null,2);
+  exportName='conversation-canvas.'+format;$('#export-content').value=exportValue;
+}
+function showCopy(text) {
+  copyMode=true;exportValue=text;exportName='followup.txt';$('#export-title').textContent='复制追问';$('#export-description').textContent='可以选择并复制下方完整内容，粘贴到 ChatGPT。';$('#export-format').hidden=true;$('#export-content').value=text;$('#export-dialog').showModal();$('#export-content').select();
+}
+async function copyText(text) {
+  try {await navigator.clipboard.writeText(text);status('内容已复制。');}catch{showCopy(text);}
+}
+$('#export').onclick=()=>{copyMode=false;$('#export-title').textContent='导出对话';$('#export-description').textContent='仅导出本次传入的内容与展示关系，不含未发送的追问。';$('#export-format').hidden=false;setExport();$('#export-dialog').showModal();};
+$('#export-format').onchange=setExport;$('#export-close').onclick=()=>$('#export-dialog').close();
+$('#export-copy').onclick=async()=>{try{await navigator.clipboard.writeText(exportValue);status('内容已复制。');}catch{$('#export-content').focus();$('#export-content').select();status('请选择并复制弹窗中的内容。');}};
+$('#export-download').onclick=()=>{const blob=new Blob([exportValue],{type:copyMode?'text/plain;charset=utf-8':$('#export-format').value==='json'?'application/json;charset=utf-8':'text/markdown;charset=utf-8'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=exportName;link.click();setTimeout(()=>URL.revokeObjectURL(url),30000);status('已请求下载；若宿主拦截下载，可使用“复制内容”。');};
+function rpc(method,params,timeout=12000) {
+  return new Promise((resolve,reject)=>{const id=++requestId;const timer=setTimeout(()=>{pending.delete(id);reject(new Error('没有收到确认'));},timeout);pending.set(id,{resolve,reject,timer});window.parent.postMessage({jsonrpc:'2.0',id,method,params},'*');});
+}
+async function sendFollowup(n,input,send) {
+  const draft=draftFor(n.id);if(!draft.text?.trim()||busy.has(n.id)||!bridgeReady)return;
+  busy.add(n.id);send.disabled=true;send.textContent='发送中…';const sentText=draft.text,sentQuote=draft.quote;
+  try {
+    const result=await rpc('ui/message',{role:'user',content:[{type:'text',text:followupText(n,draft)}]});
+    if(result?.isError)throw new Error('宿主未接受消息');
+    if(draft.text===sentText&&draft.quote===sentQuote){draft.text='';draft.quote='';input.value='';}
+    save();status(`Q${n.q} 的追问已交给 ChatGPT。回答后再次调用插件更新画布。`);
+  } catch {status('未收到发送确认，输入已保留。请先检查聊天是否已发送；也可复制追问。');}
+  finally{busy.delete(n.id);send.textContent='发送追问';send.disabled=!draft.text?.trim();const card=cards.get(n.id);if(card){const quote=card.querySelector('.quote');if(quote)quote.hidden=!draft.quote;}}
+}
+window.addEventListener('message',event=>{
+  if(event.source!==window.parent)return;const m=event.data;if(!m||m.jsonrpc!=='2.0')return;
+  if(pending.has(m.id)){const p=pending.get(m.id);clearTimeout(p.timer);pending.delete(m.id);m.error?p.reject(m.error):p.resolve(m.result);return;}
+  if(m.method==='ui/notifications/tool-result')receive(m.params);
+  if(m.method==='ui/notifications/tool-input')receive(m.params?.arguments);
+});
+window.addEventListener('beforeunload',save);
+rebuild();
+try {
+  await rpc('ui/initialize',{appInfo:{name:'conversation-canvas',version:VERSION},appCapabilities:{},protocolVersion:'2025-11-25'});
+  bridgeReady=true;window.parent.postMessage({jsonrpc:'2.0',method:'ui/notifications/initialized',params:{}},'*');
+  receive(window.openai?.toolOutput || window.openai?.toolResponse);rebuild();
+} catch {status('未连接聊天宿主，仍可浏览、导出和复制追问。');}
+</script></body></html>

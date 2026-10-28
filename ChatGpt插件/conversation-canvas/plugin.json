@@ -1,0 +1,23 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "conversation-canvas",
+  "version": "0.5.0",
+  "description": "Organize supplied conversation messages into draggable Q/A cards with editable horizontal branches, full-text search, per-card follow-ups and export.",
+  "author": {
+    "name": "Local"
+  },
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "对话便笺画布",
+        "shortDescription": "把对话整理成可拖动便笺",
+        "longDescription": "将传入的对话整理为问题在上、回答在下的便笺卡片。主线横向排列，分支独立展开，支持手动调整关系、折叠、全文搜索、选中文字追问和 Markdown/JSON 导出。每张卡片都有追问输入框；关系推断仅用于画布展示。",
+        "developerName": "Local",
+        "capabilities": [
+          "Interactive"
+        ],
+        "defaultPrompt": "把当前对话整理成问题与回答便笺画布。"
+      }
+    }
+  }
+}

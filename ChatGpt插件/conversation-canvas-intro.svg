@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820" role="img" aria-labelledby="title desc">
+  <title id="title">对话便笺画布：把对话变成思路树</title>
+  <desc id="desc">横向问答树，问题和回答合并在卡片中，主线实线连接，追问分支虚线连接，每张卡片都可以直接追问。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#edf4ff"/><stop offset="1" stop-color="#f7f9fc"/></linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4c83ee"/><stop offset="1" stop-color="#3268d8"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="12" stdDeviation="15" flood-color="#23416c" flood-opacity=".12"/></filter>
+    <filter id="cardShadow" x="-15%" y="-15%" width="130%" height="140%"><feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#203b60" flood-opacity=".09"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7894bd"/></marker>
+    <marker id="arrowBranch" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#9c7ad9"/></marker>
+  </defs>
+  <rect width="1200" height="820" rx="30" fill="url(#bg)"/>
+  <circle cx="1084" cy="110" r="150" fill="#dce9ff" opacity=".45"/>
+  <circle cx="90" cy="760" r="140" fill="#e4f7ec" opacity=".55"/>
+  <text x="68" y="73" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="16" font-weight="700" fill="#3973df" letter-spacing="1.4">CHATGPT · 对话便笺画布</text>
+  <text x="68" y="128" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="34" font-weight="750" fill="#17243a">让每段对话，都有清晰脉络</text>
+  <text x="68" y="164" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="16" fill="#65758d">问题与回答合成一张卡片，主线向前，灵感从此分支。</text>
+  <g filter="url(#shadow)">
+    <rect x="48" y="195" width="1104" height="565" rx="22" fill="#ffffff"/>
+    <path d="M48 217Q48 195 70 195H1130Q1152 195 1152 217V247H48Z" fill="#fbfcfe"/>
+    <circle cx="77" cy="221" r="6" fill="#f28b82"/><circle cx="99" cy="221" r="6" fill="#fbbc4f"/><circle cx="121" cy="221" r="6" fill="#81c995"/>
+    <text x="160" y="226" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="13" font-weight="650" fill="#60718a">项目规划 · 4 个问题节点</text>
+    <rect x="978" y="207" width="146" height="28" rx="9" fill="#eff5ff"/>
+    <text x="1000" y="226" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="11" font-weight="650" fill="#4678ce">主线 ━　分支 ╌</text>
+  </g>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M354 388C390 388 392 322 430 322" stroke="#7894bd" stroke-width="3" marker-end="url(#arrow)"/>
+    <path d="M354 420C392 420 394 582 430 582" stroke="#9c7ad9" stroke-width="3" stroke-dasharray="8 7" marker-end="url(#arrowBranch)"/>
+    <path d="M744 322C780 322 782 322 820 322" stroke="#7894bd" stroke-width="3" marker-end="url(#arrow)"/>
+  </g>
+  <g filter="url(#cardShadow)">
+    <rect x="78" y="285" width="276" height="275" rx="15" fill="#fff" stroke="#dce5f0"/>
+    <path d="M93 285H339Q354 285 354 300V291H78V300Q78 285 93 285Z" fill="#5688e2"/>
+    <rect x="96" y="305" width="34" height="25" rx="8" fill="#eaf1ff"/><text x="106" y="322" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="12" font-weight="750" fill="#376fd2">Q1</text>
+    <rect x="265" y="306" width="66" height="22" rx="11" fill="#edf4ff"/><text x="279" y="321" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="10" font-weight="650" fill="#4d78bd">主问题</text>
+    <text x="97" y="363" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="15" font-weight="700" fill="#1c2b40">怎样制定一个清晰的</text><text x="97" y="386" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="15" font-weight="700" fill="#1c2b40">项目计划？</text>
+    <line x1="96" y1="407" x2="336" y2="407" stroke="#e6edf4"/>
+    <text x="97" y="430" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="10" font-weight="750" fill="#328458">回答</text>
+    <text x="97" y="453" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="12" fill="#536277">拆分目标、里程碑与负责人，</text><text x="97" y="473" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="12" fill="#536277">让进展清楚、可追踪。</text>
+    <rect x="95" y="505" width="170" height="34" rx="9" fill="#f8fafc" stroke="#dce4ee"/><text x="108" y="527" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="11" fill="#9aa7b7">在这里继续追问…</text>
+    <rect x="273" y="505" width="63" height="34" rx="9" fill="url(#blue)"/><text x="289" y="527" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="11" font-weight="700" fill="#fff">追问</text>
+  </g>
+  <g filter="url(#cardShadow)">
+    <rect x="430" y="220" width="314" height="204" rx="15" fill="#fff" stroke="#dce5f0"/>
+    <path d="M445 220H729Q744 220 744 235V226H430V235Q430 220 445 220Z" fill="#5688e2"/>
+    <rect x="448" y="240" width="34" height="25" rx="8" fill="#eaf1ff"/><text x="458" y="257" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="12" font-weight="750" fill="#376fd2">Q2</text>
+    <rect x="655" y="241" width="70" height="22" rx="11" fill="#edf4ff"/><text x="669" y="256" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="10" font-weight="650" fill="#4d78bd">主线延续</text>
+    <text x="449" y="294" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="14" font-weight="700" fill="#1c2b40">如何把目标拆成阶段？</text>
+    <line x1="448" y1="312" x2="726" y2="312" stroke="#e6edf4"/>
+    <text x="449" y="334" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="10" font-weight="750" fill="#328458">回答</text>
+    <text x="449" y="355" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="11" fill="#536277">按时间和交付物排列，明确每阶段</text><text x="449" y="373" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="11" fill="#536277">要达成的结果。</text>
+    <rect x="448" y="386" width="218" height="26" rx="7" fill="#f8fafc" stroke="#dce4ee"/><text x="459" y="403" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="10" fill="#9aa7b7">输入针对 Q2 的追问…</text>
+    <rect x="674" y="386" width="52" height="26" rx="7" fill="url(#blue)"/><text x="686" y="403" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="10" font-weight="700" fill="#fff">追问</text>
+  </g>
+  <g filter="url(#cardShadow)">
+    <rect x="430" y="477" width="314" height="204" rx="15" fill="#fff" stroke="#e3daf3"/>
+    <path d="M445 477H729Q744 477 744 492V483H430V492Q430 477 445 477Z" fill="#9b79d7"/>
+    <rect x="448" y="497" width="34" height="25" rx="8" fill="#f2edfb"/><text x="458" y="514" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="12" font-weight="750" fill="#7854b2">Q3</text>
+    <rect x="649" y="498" width="76" height="22" rx="11" fill="#f4effc"/><text x="662" y="513" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="10" font-weight="650" fill="#795ca9">分支 · Q1</text>
+    <text x="449" y="551" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="14" font-weight="700" fill="#1c2b40">每周复盘怎么安排？</text>
+    <line x1="448" y1="569" x2="726" y2="569" stroke="#ece6f5"/>
+    <text x="449" y="591" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="10" font-weight="750" fill="#328458">回答</text>
+    <text x="449" y="612" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="11" fill="#536277">固定时间对照计划，及时调整</text><text x="449" y="630" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="11" fill="#536277">优先级和后续安排。</text>
+    <rect x="448" y="643" width="218" height="26" rx="7" fill="#faf9fc" stroke="#e5dff0"/><text x="459" y="660" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="10" fill="#a69bb8">沿着这条分支继续追问…</text>
+    <rect x="674" y="643" width="52" height="26" rx="7" fill="#8a68c4"/><text x="686" y="660" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="10" font-weight="700" fill="#fff">追问</text>
+  </g>
+  <g filter="url(#cardShadow)">
+    <rect x="820" y="220" width="294" height="204" rx="15" fill="#fff" stroke="#dce5f0"/>
+    <path d="M835 220H1099Q1114 220 1114 235V226H820V235Q820 220 835 220Z" fill="#5688e2"/>
+    <rect x="838" y="240" width="34" height="25" rx="8" fill="#eaf1ff"/><text x="848" y="257" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="12" font-weight="750" fill="#376fd2">Q4</text>
+    <rect x="1024" y="241" width="70" height="22" rx="11" fill="#edf4ff"/><text x="1038" y="256" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="10" font-weight="650" fill="#4d78bd">主线延续</text>
+    <text x="839" y="294" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="14" font-weight="700" fill="#1c2b40">怎样追踪项目进度？</text>
+    <line x1="838" y1="312" x2="1096" y2="312" stroke="#e6edf4"/>
+    <text x="839" y="334" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="10" font-weight="750" fill="#328458">回答</text>
+    <text x="839" y="355" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="11" fill="#536277">定期检查里程碑，并记录风险与</text><text x="839" y="373" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="11" fill="#536277">下一步行动。</text>
+    <rect x="838" y="386" width="198" height="26" rx="7" fill="#f8fafc" stroke="#dce4ee"/><text x="849" y="403" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="10" fill="#9aa7b7">输入针对 Q4 的追问…</text>
+    <rect x="1044" y="386" width="52" height="26" rx="7" fill="url(#blue)"/><text x="1056" y="403" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="10" font-weight="700" fill="#fff">追问</text>
+  </g>
+  <rect x="78" y="705" width="1044" height="1" fill="#edf1f6"/>
+  <text x="82" y="733" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="11" fill="#718096">拖动卡片　·　阅读完整回答　·　在对应问题下直接追问</text>
+  <text x="1090" y="733" text-anchor="end" font-family="Segoe UI,Microsoft YaHei,sans-serif" font-size="11" font-weight="650" fill="#4f7fce">主线实线　分支虚线</text>
+</svg>
